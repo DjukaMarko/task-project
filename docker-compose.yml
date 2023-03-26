@@ -1,0 +1,41 @@
+version: '2.17'
+
+services:
+  ui:
+    build: 
+      dockerfile: Dockerfile
+      context: "./ui"
+    depends_on:
+      - api
+    volumes:
+      - ./ui:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: "./api"
+    depends_on:
+      - postgres_db
+    environment:
+      DB_HOST: postgres_db
+      DB_USERNAME: postgres
+      DB_PASSWORD: 123
+      DB_DATABASE: flats
+    ports:
+      - "5000:5000"
+
+  postgres_db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: flats
+    volumes:
+      - ./db_file/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+
