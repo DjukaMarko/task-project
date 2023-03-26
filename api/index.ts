@@ -8,12 +8,8 @@ import {Pool} from "pg";
 const app: Application = express();
 const port = 5000;
 
-var corsOptions = {
-  origin: 'http://localhost:5173/',
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 
 const pool = new Pool({
